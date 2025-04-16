@@ -8,7 +8,7 @@ SimpliPy_ML relies on.
 ## Library overview:
 
 SimpliPy_ML is a python library designed to allow anyone to train and build their model without extensive programming. Built on top of famous 
-libraries for machine learning, the Tensorflow and Keras, and fom the name itself,it implies "Simplify machine learning in Python". 
+libraries for machine learning, the Tensorflow and Keras, and from the name itself, it implies "Simplify machine learning in Python". 
 Unlike when working, example in tensorflow and/or keras for a CNN model, developers typically
 code everything even using the library or framework. SimpliPy_ML does make things "simple" implementation and creating your own model. With its own 
 utilities to get and load datasets, training, building, and exporting, SimpliPy_ML will make it easier for you in just few line of syntax since 
