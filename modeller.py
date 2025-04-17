@@ -92,7 +92,7 @@ def build_CNN_model(train_set, val_set, allow_augmentation=False, input_shape=(2
     for _ in range(num_Dense_layers):
         model_layers.append(layers.Dense(128, activation=activation_function))
 
-    # Optional funnel-shaped dense layers
+    # Funnel-Shape layers that connects to the layers having 128 neurons
     model_layers.extend([
         layers.Dense(64, activation=activation_function),
         layers.Dense(32, activation=activation_function),
