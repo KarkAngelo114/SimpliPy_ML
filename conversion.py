@@ -1,3 +1,5 @@
+from .__utils__ import suppressor
+suppressor.suppress()
 import tensorflow as tf
 import os
 

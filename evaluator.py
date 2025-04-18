@@ -1,3 +1,5 @@
+from .__utils__ import suppressor, ANSI
+suppressor.suppress()
 import os
 import numpy as np
 import tensorflow as tf
@@ -53,11 +55,11 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
     """
 
     if not dir:
-        raise ValueError("\n>> Please specify the directory and ensure that it exists")
+        raise ValueError(f"\n{ANSI.red()}>> Please specify the directory and ensure that it exists")
     if not labels:
-        raise ValueError("\n>> Please enter the name of the text file that has the label names. ")
+        raise ValueError(f"\n{ANSI.red()}>> Please enter the name of the text file that has the label names. ")
     if not model_name:
-        raise ValueError("\n>> No Model to be evaluated")
+        raise ValueError(f"\n{ANSI.red()}>> No Model to be evaluated")
     
     model, model_format = getModelType(model_name) # get the loaded model and the file type
     class_names = []
@@ -69,13 +71,25 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
 
     total = 0
     correct = 0
+    total_items = 0
+    item_num = 0
+    misclassified = []
 
     for className in class_names:
         class_name_index = class_names.index(className)
         folder_path = os.path.join(dir, className)
 
+        print(f"\n\n📂 Scanning folder: {folder_path}")
+
+        total_items = len(os.listdir(folder_path))
+        current_folder = folder_path
+        item_num = 0
+
         for filename in os.listdir(folder_path):
             image_path = os.path.join(folder_path, filename)
+            
+            item_num += 1
+            progress = item_num / total_items * 100 if current_folder == folder_path else 0
 
             #preprocess the image
             img = tf.keras.preprocessing.image.load_img(image_path, target_size = input_shape)
@@ -108,12 +122,26 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
             isCorrect = (prediction == class_name_index)
             correct += int(isCorrect)
             total += 1
+            
 
-            print(f"{filename} - Predicted: {class_names[prediction]} - {'✅' if isCorrect else '❌'}")
+            if not isCorrect:
+                misclassified.append(f'{filename} - Predicted: {class_names[prediction]} || Actual: {className} || Filepath: {folder_path}')
+           
+            print(f'Scanning in progress: {ANSI.yellow()}{progress:.0f}% {ANSI.reset()}', end = "\r")
 
     # Calculate accuracy
     accuracy = correct / total if total > 0 else 0
-    print("\n=== Evaluation Complete ===")
-    print(f"Accuracy: {accuracy * 100:.2f}% ({correct}/{total})")     
+    print("\n\n=== Evaluation Complete ===")
+    print(f"Accuracy: {accuracy * 100:.2f}% ({correct}/{total})")    
+    
+    if len(misclassified) > 0:
+        # Show misclassified data if there is/are any
+        print('\n==== Misclassified ====')
+        print(f"No. of misclassified: {ANSI.red()}",len(misclassified), f'{ANSI.reset()}\n')
+        for incorrect in misclassified:
+            print(incorrect)
+        print('')
+    else:
+        print(f'{ANSI.green()}\m=== No Misclassified data ==={ANSI.reset()}\n')
 
 
