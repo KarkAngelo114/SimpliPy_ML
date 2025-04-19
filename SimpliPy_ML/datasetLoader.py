@@ -75,9 +75,7 @@ def load_Image_datasets(dir, autoResize=True, input_size=(0,0), mode='', split_s
     print(train_dataset.class_names)
 
     # Save class names to a file in the same directory as main.py
-    main_dir = os.path.dirname(os.path.abspath(__file__))
-    project_dir = os.path.dirname(main_dir)
-    label_map_path = os.path.join(project_dir, "label_map.txt")
+    label_map_path = os.path.join(os.getcwd(), "label_map.txt")
     print(f"\n>> Saving class names to {ANSI.green()}{label_map_path}{ANSI.reset()}")
     with open(label_map_path, "w") as f:
         for class_name in train_dataset.class_names:
