@@ -3,20 +3,31 @@ import sys
 from ..__utils__ import ANSI
 
 def self_update():
-    """
-    Calling this function will update the SimpliPy_ML module.
-    """
+    import subprocess, sys
+    from ..__utils__ import ANSI
+
+    print("\n=================================")
+    print(f"{ANSI.cyan()}>> Updating {ANSI.yellow()}SimpliPy_ML{ANSI.reset()}\n")
+    
     try:
-        print("\n=================================")
-        print(f"{ANSI.cyan()}>> Updating {ANSI.yellow()}SimpliPy_ML{ANSI.reset()}\n")
-        
-        # Corrected pip command for updating
         subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "SimpliPy_ML"])
-        print(f"{ANSI.green()}>> Successfully updated SimpliPy_ML{ANSI.reset()}")
+        print(f"{ANSI.green()}>> Successfully updated from PyPI!{ANSI.reset()}")
         return True
-    except subprocess.CalledProcessError as e:
-        print(f"{ANSI.red()}>> Failed to update SimpliPy_ML: {e}{ANSI.reset()}")
-        return False
+    except subprocess.CalledProcessError:
+        print(f"{ANSI.yellow()}>> PyPI update failed, trying GitHub...{ANSI.reset()}")
+        try:
+            subprocess.check_call([
+                sys.executable,
+                "-m", "pip",
+                "install",
+                "--upgrade",
+                "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
+            ])
+            print(f"{ANSI.green()}>> Successfully updated from GitHub!{ANSI.reset()}")
+            return True
+        except subprocess.CalledProcessError as e:
+            print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
+            return False
 
 def package_install(package_name):
     """
