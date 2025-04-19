@@ -98,7 +98,7 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
             if not isCorrect:
                 misclassified.append(f'{filename} - Predicted: {class_names[prediction]} || Actual: {className} || Filepath: {folder_path}')
            
-            print(f'Scanning in progress: {ANSI.yellow()}{progress:.0f}% {ANSI.reset()}', end = "\r")
+            print(f'>> Scanning in progress: [{ANSI.yellow()}{progress:.0f}%{ANSI.reset()}]', end = "\r")
 
     # Calculate accuracy
     accuracy = correct / total if total > 0 else 0
