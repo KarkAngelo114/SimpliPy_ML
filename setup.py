@@ -1,8 +1,9 @@
 from setuptools import setup, find_packages
+from SimpliPy_ML.__utils__ import __version__
 
 setup(
     name="SimpliPy_ML",  # Replace with your library's name
-    version="0.1.0",  # Replace with your library's version
+    version= __version__.getVersion(),
     description="A Python library for machine learning utilities and tools",
     author="Your Name",
     author_email="karkangelovaronapada@gmail.com",
