@@ -13,3 +13,15 @@ def blue():
 
 def reset():
     return '\033[0m'
+
+def cyan():
+    return '\033[96m'
+
+def magenta():
+    return '\033[95m'
+
+def white():
+    return '\033[97m'
+
+def black():
+    return '\033[90m'

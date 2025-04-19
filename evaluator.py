@@ -1,38 +1,9 @@
-from .__utils__ import suppressor, ANSI
+from .__utils__ import suppressor, ANSI, ModelType
 suppressor.suppress()
 import os
 import numpy as np
 import tensorflow as tf
 from PIL import Image
-
-def getModelType(model):
-    """
-        load a model to identify it's format automatically
-
-        Returns:
-            tuble : 
-                - model: Loaded model
-                - model_type (str): returns what type of format (.tflite, h5, onnx)
-    """
-
-    file_extension = os.path.splitext(model)[1].lower() # get the model fornat
-
-    if file_extension == ".tflite":
-        interpreter = tf.lite.Interpreter(model_path = model)
-        interpreter.allocate_tensors()
-        return interpreter, '.tflite'
-    elif file_extension ==  ".h5":
-        model = tf.keras.models.load_model(model)
-        return model, '.h5'
-    elif file_extension == ".onnx":
-        try:
-            import onnxruntime as ort
-            session = ort.InferenceSession(model)
-            return session, '.onnx'
-        except:
-            print("\>> [!] Please install onnxruntime first")
-    else:
-        raise ValueError(f"\n>> Unsupported file extension {file_extension}")
 
 
 def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
@@ -61,7 +32,7 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
     if not model_name:
         raise ValueError(f"\n{ANSI.red()}>> No Model to be evaluated")
     
-    model, model_format = getModelType(model_name) # get the loaded model and the file type
+    model, model_format = ModelType.getModelType(model_name) # get the loaded model and the file type
     class_names = []
 
     # load the txt file that contains class names for evaluation
