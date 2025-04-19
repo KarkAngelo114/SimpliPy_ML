@@ -19,7 +19,9 @@ def check_github_version():
     return None
 
 def self_update():
-
+    """
+        Calling this function will update SimpliPy_ML
+    """
     print("\n=================================")
     print(f"{ANSI.cyan()}>> Updating {ANSI.yellow()}SimpliPy_ML{ANSI.reset()}\n")
     
