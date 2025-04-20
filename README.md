@@ -29,9 +29,24 @@ Pre-requisites:
     - matplotlib
     - pandas
     - seaborn
+    - onnx
+    - keras2onnx
+    - onnxruntime
  
-installation command for the pre-requisite libraries: pip install tensorflow keras pillow numpy scikit-learn matplotlib pandas seaborn
+installation command for the pre-requisite libraries: pip install tensorflow keras pillow numpy scikit-learn matplotlib pandas seaborn onnx keras2onnx onnxruntime
+
+Or alternatively, after installation of SimpliPy_ML, create a python script and run the following code:
+
+## Python:
+========================================
+from SimpliPy_ML.tools import installer
+
+installer.package_install('*') #This will install library/ies that SimpliPy_ML depends on
+========================================
+
+## FIXES
+[04/20/2025] - incorrectly saving files to wrong directoy instead to the current working directory -> FIXED
 
 Read the documentation how to use SimpliPy_ML.
 
-"Have fun building stuffs :)" - Kark Angelo (The developer)
+"Have fun building stuffs :D" - Kark Angelo (The lead developer)
