@@ -1,73 +1,69 @@
 import os
-import subprocess
 import sys
+import subprocess
+import json
+import urllib.request
 from ..__utils__ import ANSI
-import venv
+from importlib.metadata import version as get_installed_version  # Python 3.8+
 
-def get_project_root():
-    """
-    Attempts to find the project root directory by looking for a marker file/directory.
-    Adjust the marker (e.g., '.git', '.venv', or a specific file) as needed for your project.
-    """
-    current_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-    while True:
-        if os.path.exists(os.path.join(current_dir, ".venv")):  # Look for the virtual environment directory
-            return current_dir
-        parent_dir = os.path.dirname(current_dir)
-        if parent_dir == current_dir:  # Reached the root of the filesystem
-            return None
-        current_dir = parent_dir
+PACKAGE_NAME = "SimpliPy_ML"
+
+def get_latest_pypi_version(package_name):
+    try:
+        with urllib.request.urlopen(f"https://pypi.org/pypi/{package_name}/json") as response:
+            data = json.loads(response.read().decode())
+            return data["info"]["version"]
+    except Exception as e:
+        print(f"{ANSI.yellow()}>> Could not fetch latest version from PyPI: {e}{ANSI.reset()}")
+        return None
 
 def self_update():
     """
-    Calling this function will update SimpliPy_ML to newer versions available.
-    Ensures pip is executed within the project's virtual environment.
+    Checks the current installed version of SimpliPy_ML and updates it
+    if a newer version is found on PyPI. Falls back to GitHub if needed.
     """
-
     print("\n=================================")
-    print(f"{ANSI.cyan()}>> Updating {ANSI.yellow()}SimpliPy_ML{ANSI.reset()}\n")
-
-    original_cwd = os.getcwd()
+    print(f"{ANSI.cyan()}>> Checking for updates for {ANSI.yellow()}{PACKAGE_NAME}{ANSI.reset()}\n")
 
     try:
-        project_root = get_project_root()
-        if not project_root:
-            print(f"{ANSI.yellow()}>> Could not determine the project root directory.{ANSI.reset()}")
-            return False
+        installed_version = get_installed_version(PACKAGE_NAME)
+        latest_version = get_latest_pypi_version(PACKAGE_NAME)
 
-        venv_path = os.path.join(project_root, ".venv")
-
-        pip_executable = os.path.join(venv_path, "bin", "pip")
-        if sys.platform == "win32":
-            pip_executable = os.path.join(venv_path, "Scripts", "pip.exe")
-
-        if not os.path.exists(pip_executable):
-            print(f"{ANSI.yellow()}>> Virtual environment not found or pip executable missing at: {pip_executable}{ANSI.reset()}")
-            return False
-
-        # Try updating from PyPI
-        subprocess.check_call([pip_executable, "install", "--upgrade", "SimpliPy_ML"], cwd=project_root)
-        print(f"{ANSI.green()}>> Successfully updated from PyPI!{ANSI.reset()}")
-        return True
-    except subprocess.CalledProcessError:
-        print(f"{ANSI.yellow()}>> PyPI update failed, trying GitHub...{ANSI.reset()}")
-        try:
-            # Try updating from GitHub
+        if latest_version is None:
+            print(f"{ANSI.yellow()}>> Skipping PyPI check. Trying GitHub...{ANSI.reset()}")
+        elif latest_version > installed_version:
+            print(f"{ANSI.green()}>> New version available on PyPI: {latest_version} (Installed: {installed_version}){ANSI.reset()}")
             subprocess.check_call([
-                pip_executable,
+                sys.executable,
+                "-m", "pip",
                 "install",
-                "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
-            ], cwd=project_root)
-            print(f"{ANSI.green()}>> Successfully updated from GitHub!{ANSI.reset()}")
+                "--upgrade",
+                PACKAGE_NAME
+            ])
+            print(f"{ANSI.green()}>> Successfully updated from PyPI! Please restart the application.{ANSI.reset()}")
             return True
-        except subprocess.CalledProcessError as e:
-            print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
-            return False
-    finally:
-        os.chdir(original_cwd)
+        else:
+            print(f"{ANSI.cyan()}>> Already up-to-date on PyPI: {installed_version}{ANSI.reset()}")
+            return True
 
+    except Exception as e:
+        print(f"{ANSI.yellow()}>> PyPI update failed or not available: {e}{ANSI.reset()}")
+        print(f"{ANSI.yellow()}>> Trying to update from GitHub...{ANSI.reset()}")
 
-#This function here is to install dependencies
+    try:
+        subprocess.check_call([
+            sys.executable,
+            "-m", "pip",
+            "install",
+            "--upgrade",
+            "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
+        ])
+        print(f"{ANSI.green()}>> Successfully updated from GitHub! Please restart the application.{ANSI.reset()}")
+        return True
+    except subprocess.CalledProcessError as e:
+        print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
+        return False
+
 def package_install(package_name):
     """
     Installs the required libraries for SimpliPy_ML.
