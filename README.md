@@ -39,8 +39,6 @@ Pre-requisites:
     - onnx
     - keras2onnx
     - onnxruntime
- 
-installation command for the pre-requisite libraries: pip install tensorflow keras pillow numpy scikit-learn matplotlib pandas seaborn onnx keras2onnx onnxruntime
 
 Or alternatively, after installation of SimpliPy_ML, create a python script and run the following code:
 
