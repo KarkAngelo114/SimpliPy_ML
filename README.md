@@ -5,6 +5,13 @@
 - Users need to install at least Python 3.10.9 version on their machine in order to run modules/libraries/frameworks that
 SimpliPy_ML relies on.
 
+## How to install?
+You can run the following command in the terminal in your project directory:
+
+```bash
+pip install SimpliPy_ML
+```
+
 ## Library overview:
 
 A Python package called SimpliPy_ML was created to enable anyone to train and construct a model without the need for complex programming.  Based on the well-known machine learning frameworks Tensorflow and Keras, the name suggests that it is designed to "simplify machine learning in Python." Developers usually code everything, even using the library or framework, in contrast to working with tensorflow and/or keras for a CNN model.  Making your own model and implementing it are made "simple" with SimpliPy_ML.  Since some of the functions required to complete these tasks are already pre-coded and ready to use for SIMPLE TASKS THAT INVOLVED MACHINE-LEARNING, SimpliPy_ML will make it easier for you in just a few lines of syntax with its own utilities to extract and load datasets, train, create, and export.
