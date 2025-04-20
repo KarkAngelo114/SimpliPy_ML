@@ -53,34 +53,6 @@ def self_update():
         # Restore the original working directory (optional, as we might not have changed it)
         os.chdir(original_cwd)
 
-# def self_update():
-#     """
-#         Calling this function will update SimpliPy_ML to newer versions available
-#     """
-
-#     print("\n=================================")
-#     print(f"{ANSI.cyan()}>> Updating {ANSI.yellow()}SimpliPy_ML{ANSI.reset()}\n")
-
-#     try:
-#         subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "SimpliPy_ML"])
-#         print(f"{ANSI.green()}>> Successfully updated from PyPI!{ANSI.reset()}")
-#         return True
-#     except subprocess.CalledProcessError:
-#         print(f"{ANSI.yellow()}>> PyPI update failed, trying GitHub...{ANSI.reset()}")
-#         try:
-#             subprocess.check_call([
-#                 sys.executable,
-#                 "-m", "pip",
-#                 "install",
-#                 "--upgrade",
-#                 "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
-#             ])
-#             print(f"{ANSI.green()}>> Successfully updated from GitHub!{ANSI.reset()}")
-#             return True
-#         except subprocess.CalledProcessError as e:
-#             print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
-#             return False
-
 
 
 def package_install(package_name):
