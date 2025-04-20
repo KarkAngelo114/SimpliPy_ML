@@ -45,7 +45,8 @@ installer.package_install('*') #This will install library/ies that SimpliPy_ML d
 ========================================
 
 ## FIXES
-[04/20/2025] - incorrectly saving files to wrong directoy instead to the current working directory -> FIXED
+ - self update function not getting updates from github repo -> FIXED
+ - incorrectly saving files to wrong directoy instead to the current working directory -> FIXED
 
 Read the documentation how to use SimpliPy_ML.
 
