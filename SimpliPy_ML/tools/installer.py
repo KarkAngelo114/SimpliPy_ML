@@ -70,7 +70,7 @@ def self_update():
         print(f"{ANSI.cyan()}>> Already up-to-date: {ANSI.yellow()}{latest_version}{ANSI.reset()}")
         return True
     elif latest_version != local_version:
-        print(f"{ANSI.green()}>> New version available: {latest_version} (Installed: {local_version}){ANSI.reset()}")
+        print(f"{ANSI.green()}>> New version available: {latest_version}{local_version}){ANSI.reset()}")
 
         try:
             subprocess.check_call([
