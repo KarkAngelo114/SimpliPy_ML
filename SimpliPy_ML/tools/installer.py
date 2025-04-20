@@ -3,10 +3,13 @@ import sys
 import subprocess
 import json
 import urllib.request
-from ..__utils__ import ANSI
+from ..__utils__ import ANSI, __pkg_ver__
 from importlib.metadata import version as get_installed_version  # Python 3.8+
 
+# Constants
 PACKAGE_NAME = "SimpliPy_ML"
+VERSION_FILE_URL = "https://raw.githubusercontent.com/KarkAngelo114/SimpliPy_ML/__utils__/VERSION.txt"
+
 
 def get_latest_pypi_version(package_name):
     try:
@@ -16,6 +19,7 @@ def get_latest_pypi_version(package_name):
     except Exception as e:
         print(f"{ANSI.yellow()}>> Could not fetch latest version from PyPI: {e}{ANSI.reset()}")
         return None
+
 
 def self_update():
     """
@@ -49,20 +53,38 @@ def self_update():
     except Exception as e:
         print(f"{ANSI.yellow()}>> PyPI update failed or not available: {e}{ANSI.reset()}")
         print(f"{ANSI.yellow()}>> Trying to update from GitHub...{ANSI.reset()}")
+    
+    print("\n=================================")
+    print(f"{ANSI.cyan()}>> Checking for updates for {ANSI.yellow()}{PACKAGE_NAME}{ANSI.reset()}\n")
 
-    try:
-        subprocess.check_call([
-            sys.executable,
-            "-m", "pip",
-            "install",
-            "--upgrade",
-            "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
-        ])
-        print(f"{ANSI.green()}>> Successfully updated from GitHub! Please restart the application.{ANSI.reset()}")
-        return True
-    except subprocess.CalledProcessError as e:
-        print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
+    local_version = __pkg_ver__.get_local_version()
+    latest_version = __pkg_ver__.get_latest_github_version()
+
+    if latest_version is None:
+        print(f"{ANSI.yellow()}>> Could not fetch latest version from GitHub. Skipping update.{ANSI.reset()}")
         return False
+
+    if local_version is None:
+        print(f"{ANSI.yellow()}>> Local version unknown. Attempting update...{ANSI.reset()}")
+    elif latest_version == local_version:
+        print(f"{ANSI.cyan()}>> Already up-to-date: {latest_version}{ANSI.reset()}")
+        return True
+    else:
+        print(f"{ANSI.green()}>> New version available: {latest_version} (Installed: {local_version}){ANSI.reset()}")
+
+        try:
+            subprocess.check_call([
+                sys.executable,
+                "-m", "pip",
+                "install",
+                "--upgrade",
+                "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
+            ])
+            print(f"{ANSI.green()}>> Successfully updated from GitHub! Please restart the application.{ANSI.reset()}")
+            return True
+        except subprocess.CalledProcessError as e:
+            print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
+            return False
 
 def package_install(package_name):
     """
