@@ -3,6 +3,7 @@ suppressor.suppress()
 import tensorflow as tf
 import os
 
+
 def exporter(model, model_name, format):
     """
         Parameters:
@@ -21,11 +22,11 @@ def exporter(model, model_name, format):
 
 
     # This will save the model by default but as a keras format only. The purpose is this will serve as backup model if there's a problem in exporting to other formats.
-    print(f'\n{ANSI.yellow()}=============================================================')
+    print(f'\n{ANSI.yellow()}===============================================================')
     model_path = os.path.join(os.getcwd(), 'Default_Model.keras')
     model.save(model_path)
     print(f"[!] Default_Model.keras is exported by default. You can convert this to other formats later on.")
-    print(f'============================================================={ANSI.reset()}\n')
+    print(f'==============================================================={ANSI.reset()}\n')
 
     if format == "":
         raise ValueError(f"{ANSI.red()}>> Specify the format in exporting the model. (Ex: tflite, save_model, keras, onnx, h5){ANSI.reset()}")

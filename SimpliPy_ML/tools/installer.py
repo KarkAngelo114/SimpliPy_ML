@@ -22,7 +22,6 @@ def self_update():
                 "-m", "pip",
                 "install",
                 "--upgrade",
-                "--force-reinstall",
                 "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
             ])
             print(f"{ANSI.green()}>> Successfully updated from GitHub!{ANSI.reset()}")
