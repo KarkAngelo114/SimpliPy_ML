@@ -8,7 +8,7 @@ from importlib.metadata import version as get_installed_version  # Python 3.8+
 
 # Constants
 PACKAGE_NAME = "SimpliPy_ML"
-VERSION_FILE_URL = "https://raw.githubusercontent.com/KarkAngelo114/SimpliPy_ML/__utils__/VERSION.txt"
+
 
 
 def get_latest_pypi_version(package_name):

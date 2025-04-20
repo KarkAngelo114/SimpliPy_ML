@@ -8,6 +8,7 @@ setup(
     author_email="karkangelovaronapada@gmail.com",
     url="https://github.com/KarkAngelo114/SimpliPy_ML",
     packages=find_packages(),
+    include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
