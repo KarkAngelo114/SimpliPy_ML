@@ -34,7 +34,7 @@ def self_update():
         if latest_version is None:
             print(f"{ANSI.yellow()}>> Skipping PyPI check. Trying GitHub...{ANSI.reset()}")
         elif latest_version > installed_version:
-            print(f"{ANSI.green()}>> New version available on PyPI: {latest_version} (Installed: {installed_version}){ANSI.reset()}")
+            print(f"{ANSI.green()}>> New version available on PyPI: {latest_version} Installed Version: {installed_version}){ANSI.reset()}")
             subprocess.check_call([
                 sys.executable,
                 "-m", "pip",
@@ -68,7 +68,7 @@ def self_update():
         print(f"{ANSI.cyan()}>> Already up-to-date: {ANSI.yellow()}{latest_version}{ANSI.reset()}")
         return True
     elif latest_version != local_version:
-        print(f"{ANSI.green()}>> New version available: {latest_version}{local_version}){ANSI.reset()}")
+        print(f"{ANSI.cyan()}>> New version available: {latest_version} {ANSI.yellow()}Installed version: {local_version}){ANSI.reset()}")
 
         try:
             subprocess.check_call([
