@@ -1,10 +1,5 @@
-To embed an image in the README section, you can use the following syntax in Markdown:
 
-```markdown
 ![Logo](LOGO/SimpliPy_ML.png "SimpliPy_ML")
-```
-
-This will display the image in the README file. Make sure to replace `https://example.com/logo.png` with the actual URL or local path to your image.
 
 ## SimpliPy_ML
 
