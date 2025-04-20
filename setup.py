@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="SimpliPy_ML",
-    version="0.0.1",
+    version="0.0.2",
     description="SimpliPy_ML is a python library which makes machine-learning workflow easier.",
     author="Your Name",
     author_email="karkangelovaronapada@gmail.com",
