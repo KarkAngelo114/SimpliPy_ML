@@ -64,12 +64,12 @@ def self_update():
         print(f"{ANSI.yellow()}>> Could not fetch latest version from GitHub. Skipping update.{ANSI.reset()}")
         return False
 
-    if local_version is None:
+    elif local_version is None:
         print(f"{ANSI.yellow()}>> Local version unknown. Unable to update{ANSI.reset()}")
     elif latest_version == local_version:
         print(f"{ANSI.cyan()}>> Already up-to-date: {ANSI.yellow()}{latest_version}{ANSI.reset()}")
         return True
-    else:
+    elif latest_version != local_version:
         print(f"{ANSI.green()}>> New version available: {latest_version} (Installed: {local_version}){ANSI.reset()}")
 
         try:
