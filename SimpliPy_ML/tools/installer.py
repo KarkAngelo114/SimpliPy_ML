@@ -1,22 +1,33 @@
+import os
 import subprocess
 import sys
 from ..__utils__ import ANSI
 
 def self_update():
     """
-        Calling this function will update SimpliPy_ML to newer versions available
+    Calling this function will update SimpliPy_ML to newer versions available.
+    Automatically determines the project's root directory.
     """
 
     print("\n=================================")
     print(f"{ANSI.cyan()}>> Updating {ANSI.yellow()}SimpliPy_ML{ANSI.reset()}\n")
 
+    # Save the current working directory
+    original_cwd = os.getcwd()
+
     try:
+        # Determine the project's root directory based on the script being executed
+        project_root = os.path.dirname(os.path.abspath(sys.argv[0]))
+        os.chdir(project_root)
+
+        # Try updating from PyPI
         subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "SimpliPy_ML"])
         print(f"{ANSI.green()}>> Successfully updated from PyPI!{ANSI.reset()}")
         return True
     except subprocess.CalledProcessError:
         print(f"{ANSI.yellow()}>> PyPI update failed, trying GitHub...{ANSI.reset()}")
         try:
+            # Try updating from GitHub
             subprocess.check_call([
                 sys.executable,
                 "-m", "pip",
@@ -29,6 +40,39 @@ def self_update():
         except subprocess.CalledProcessError as e:
             print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
             return False
+    finally:
+        # Restore the original working directory
+        os.chdir(original_cwd)
+
+# def self_update():
+#     """
+#         Calling this function will update SimpliPy_ML to newer versions available
+#     """
+
+#     print("\n=================================")
+#     print(f"{ANSI.cyan()}>> Updating {ANSI.yellow()}SimpliPy_ML{ANSI.reset()}\n")
+
+#     try:
+#         subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "SimpliPy_ML"])
+#         print(f"{ANSI.green()}>> Successfully updated from PyPI!{ANSI.reset()}")
+#         return True
+#     except subprocess.CalledProcessError:
+#         print(f"{ANSI.yellow()}>> PyPI update failed, trying GitHub...{ANSI.reset()}")
+#         try:
+#             subprocess.check_call([
+#                 sys.executable,
+#                 "-m", "pip",
+#                 "install",
+#                 "--upgrade",
+#                 "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
+#             ])
+#             print(f"{ANSI.green()}>> Successfully updated from GitHub!{ANSI.reset()}")
+#             return True
+#         except subprocess.CalledProcessError as e:
+#             print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
+#             return False
+
+
 
 def package_install(package_name):
     """
