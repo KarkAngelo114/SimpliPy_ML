@@ -1,5 +1,5 @@
 import urllib.request
-from . import ANSI  # Import ANSI from __utils__
+from . import ANSI
 import os
 
 # GitHub raw URL to the VERSION.txt file
@@ -31,4 +31,14 @@ def get_latest_github_version():
             return response.read().decode().strip()
     except Exception as e:
         print(f"{ANSI.yellow()}>> Could not fetch latest version from GitHub: {e}{ANSI.reset()}")
+        return None
+
+# function to get package version from PyPi
+def get_latest_pypi_version(package_name):
+    try:
+        with urllib.request.urlopen(f"https://pypi.org/pypi/{package_name}/json") as response:
+            data = json.loads(response.read().decode())
+            return data["info"]["version"]
+    except Exception as e:
+        print(f"{ANSI.yellow()}>> Could not fetch latest version from PyPI: {e}{ANSI.reset()}")
         return None

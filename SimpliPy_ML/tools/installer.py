@@ -9,27 +9,18 @@ from importlib.metadata import version as get_installed_version  # Python 3.8+
 # Constants
 PACKAGE_NAME = "SimpliPy_ML"
 
-def get_latest_pypi_version(package_name):
-    try:
-        with urllib.request.urlopen(f"https://pypi.org/pypi/{package_name}/json") as response:
-            data = json.loads(response.read().decode())
-            return data["info"]["version"]
-    except Exception as e:
-        print(f"{ANSI.yellow()}>> Could not fetch latest version from PyPI: {e}{ANSI.reset()}")
-        return None
-
-
+#Self-updating function. Call this from the main python file or whatever the name of the python file is.
+#Calling this will update the library without using CMD to update SimpliPy_ML.. It will check first if there's an updates from PyPi, otherwise get updates from github
 def self_update():
     """
-    Checks the current installed version of SimpliPy_ML and updates it
-    if a newer version is found on PyPI. Falls back to GitHub if needed.
+    Checks the current installed version of SimpliPy_ML and updates it if a newer version is found on PyPI. Falls back to GitHub if needed.
     """
     print("\n=================================")
     print(f"{ANSI.cyan()}>> Checking for updates for {ANSI.yellow()}{PACKAGE_NAME}{ANSI.reset()}\n")
 
     try:
         installed_version = get_installed_version(PACKAGE_NAME)
-        latest_version = get_latest_pypi_version(PACKAGE_NAME)
+        latest_version = __pkg_ver__.get_latest_pypi_version(PACKAGE_NAME)
 
         if latest_version is None:
             print(f"{ANSI.yellow()}>> Skipping PyPI check. Trying GitHub...{ANSI.reset()}")
