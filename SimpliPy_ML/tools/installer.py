@@ -9,8 +9,6 @@ from importlib.metadata import version as get_installed_version  # Python 3.8+
 # Constants
 PACKAGE_NAME = "SimpliPy_ML"
 
-
-
 def get_latest_pypi_version(package_name):
     try:
         with urllib.request.urlopen(f"https://pypi.org/pypi/{package_name}/json") as response:
