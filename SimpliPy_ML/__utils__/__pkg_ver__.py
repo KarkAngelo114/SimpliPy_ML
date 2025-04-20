@@ -1,5 +1,6 @@
 import urllib.request
 from . import ANSI  # Import ANSI from __utils__
+import os
 
 # GitHub raw URL to the VERSION.txt file
 VERSION_FILE_URL = "https://raw.githubusercontent.com/KarkAngelo114/SimpliPy_ML/main/SimpliPy_ML/__utils__/VERSION.txt"
@@ -8,15 +9,17 @@ VERSION_FILE_URL = "https://raw.githubusercontent.com/KarkAngelo114/SimpliPy_ML/
 # Utility to get installed version (if __version__ isn't available, fallback to custom solution)
 def get_local_version():
     try:
-        # Try importing __version__ 
+        # Try importing __version__
         from SimpliPy_ML import __version__
         return __version__
     except ImportError:
         pass
 
-    # Alternatively, read local VERSION.txt if bundled in the package
+    # Fallback to reading from bundled VERSION.txt
     try:
-        with open("VERSION.txt", "r") as version_reader:
+        # Get the path to the VERSION.txt inside the installed package
+        version_file = os.path.join(os.path.dirname(__file__), "VERSION.txt")
+        with open(version_file, "r") as version_reader:
             return version_reader.read().strip()
     except Exception:
         return None
