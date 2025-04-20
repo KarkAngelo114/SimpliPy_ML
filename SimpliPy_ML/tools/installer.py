@@ -4,6 +4,20 @@ import sys
 from ..__utils__ import ANSI
 import venv
 
+def get_project_root():
+    """
+    Attempts to find the project root directory by looking for a marker file/directory.
+    Adjust the marker (e.g., '.git', '.venv', or a specific file) as needed for your project.
+    """
+    current_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    while True:
+        if os.path.exists(os.path.join(current_dir, ".venv")):  # Look for the virtual environment directory
+            return current_dir
+        parent_dir = os.path.dirname(current_dir)
+        if parent_dir == current_dir:  # Reached the root of the filesystem
+            return None
+        current_dir = parent_dir
+
 def self_update():
     """
     Calling this function will update SimpliPy_ML to newer versions available.
@@ -13,16 +27,17 @@ def self_update():
     print("\n=================================")
     print(f"{ANSI.cyan()}>> Updating {ANSI.yellow()}SimpliPy_ML{ANSI.reset()}\n")
 
-    # Save the current working directory (though we might not need to change it)
     original_cwd = os.getcwd()
 
     try:
-        # Determine the path to the virtual environment directory
-        project_root = os.path.dirname(os.path.abspath(sys.argv[0]))
+        project_root = get_project_root()
+        if not project_root:
+            print(f"{ANSI.yellow()}>> Could not determine the project root directory.{ANSI.reset()}")
+            return False
+
         venv_path = os.path.join(project_root, ".venv")
 
-        # Construct the path to the pip executable within the virtual environment
-        pip_executable = os.path.join(venv_path, "bin", "pip")  # For Linux/macOS
+        pip_executable = os.path.join(venv_path, "bin", "pip")
         if sys.platform == "win32":
             pip_executable = os.path.join(venv_path, "Scripts", "pip.exe")
 
@@ -31,7 +46,7 @@ def self_update():
             return False
 
         # Try updating from PyPI
-        subprocess.check_call([pip_executable, "install", "--upgrade", "SimpliPy_ML"])
+        subprocess.check_call([pip_executable, "install", "--upgrade", "SimpliPy_ML"], cwd=project_root)
         print(f"{ANSI.green()}>> Successfully updated from PyPI!{ANSI.reset()}")
         return True
     except subprocess.CalledProcessError:
@@ -43,14 +58,13 @@ def self_update():
                 "install",
                 "--upgrade",
                 "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
-            ])
+            ], cwd=project_root)
             print(f"{ANSI.green()}>> Successfully updated from GitHub!{ANSI.reset()}")
             return True
         except subprocess.CalledProcessError as e:
             print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
             return False
     finally:
-        # Restore the original working directory (optional, as we might not have changed it)
         os.chdir(original_cwd)
 
 
