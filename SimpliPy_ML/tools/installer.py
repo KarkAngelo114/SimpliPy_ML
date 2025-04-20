@@ -56,7 +56,6 @@ def self_update():
             subprocess.check_call([
                 pip_executable,
                 "install",
-                "--upgrade",
                 "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
             ], cwd=project_root)
             print(f"{ANSI.green()}>> Successfully updated from GitHub!{ANSI.reset()}")
@@ -68,7 +67,7 @@ def self_update():
         os.chdir(original_cwd)
 
 
-
+#This function here is to install dependencies
 def package_install(package_name):
     """
     Installs the required libraries for SimpliPy_ML.
