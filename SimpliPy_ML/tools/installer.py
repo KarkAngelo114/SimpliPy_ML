@@ -2,26 +2,36 @@ import os
 import subprocess
 import sys
 from ..__utils__ import ANSI
+import venv
 
 def self_update():
     """
     Calling this function will update SimpliPy_ML to newer versions available.
-    Automatically determines the project's root directory.
+    Ensures pip is executed within the project's virtual environment.
     """
 
     print("\n=================================")
     print(f"{ANSI.cyan()}>> Updating {ANSI.yellow()}SimpliPy_ML{ANSI.reset()}\n")
 
-    # Save the current working directory
+    # Save the current working directory (though we might not need to change it)
     original_cwd = os.getcwd()
 
     try:
-        # Determine the project's root directory based on the script being executed
+        # Determine the path to the virtual environment directory
         project_root = os.path.dirname(os.path.abspath(sys.argv[0]))
-        os.chdir(project_root)
+        venv_path = os.path.join(project_root, ".venv")
+
+        # Construct the path to the pip executable within the virtual environment
+        pip_executable = os.path.join(venv_path, "bin", "pip")  # For Linux/macOS
+        if sys.platform == "win32":
+            pip_executable = os.path.join(venv_path, "Scripts", "pip.exe")
+
+        if not os.path.exists(pip_executable):
+            print(f"{ANSI.yellow()}>> Virtual environment not found or pip executable missing at: {pip_executable}{ANSI.reset()}")
+            return False
 
         # Try updating from PyPI
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "SimpliPy_ML"])
+        subprocess.check_call([pip_executable, "install", "--upgrade", "SimpliPy_ML"])
         print(f"{ANSI.green()}>> Successfully updated from PyPI!{ANSI.reset()}")
         return True
     except subprocess.CalledProcessError:
@@ -29,8 +39,7 @@ def self_update():
         try:
             # Try updating from GitHub
             subprocess.check_call([
-                sys.executable,
-                "-m", "pip",
+                pip_executable,
                 "install",
                 "--upgrade",
                 "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
@@ -41,7 +50,7 @@ def self_update():
             print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
             return False
     finally:
-        # Restore the original working directory
+        # Restore the original working directory (optional, as we might not have changed it)
         os.chdir(original_cwd)
 
 # def self_update():
