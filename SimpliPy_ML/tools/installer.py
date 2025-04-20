@@ -80,7 +80,7 @@ def self_update():
                 "--upgrade",
                 "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
             ])
-            print(f"{ANSI.green()}>> Successfully updated from GitHub! Please restart the application.{ANSI.reset()}")
+            print(f"{ANSI.cyan()}>> Successfully updated from GitHub!{ANSI.reset()}")
             return True
         except subprocess.CalledProcessError as e:
             print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
