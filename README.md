@@ -37,12 +37,14 @@ installation command for the pre-requisite libraries: pip install tensorflow ker
 
 Or alternatively, after installation of SimpliPy_ML, create a python script and run the following code:
 
+```python
 ## Python:
-========================================
+
 from SimpliPy_ML.tools import installer
 
-installer.package_install('*') #This will install library/ies that SimpliPy_ML depends on
-========================================
+# This will install all libraries that SimpliPy_ML depends on
+installer.package_install('*')
+```
 
 ## WHAT'S NEW??
  - added a failsafe mechanism when exporting models. The exported model is in .keras file format which can be converted to other formats later on. The feature will ensure that the model will be save before any problem in exporting the model (ex: forgot to name the model, specify the format, etc.)
