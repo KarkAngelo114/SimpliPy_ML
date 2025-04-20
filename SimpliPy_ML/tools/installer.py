@@ -1,7 +1,6 @@
 import subprocess
 import sys
 from ..__utils__ import ANSI
-from ..__utils__ import __version__ as current_version
 
 def self_update():
     """
