@@ -23,9 +23,10 @@ def exporter(model, model_name, format):
 
     # This will save the model by default but as a keras format only. The purpose is this will serve as backup model if there's a problem in exporting to other formats.
     print(f'\n{ANSI.yellow()}===============================================================')
-    model_path = os.path.join(os.getcwd(), 'Default_Model.keras')
+    print(">> This is Fail-Safe mechanism in action.. Exporting keras model..")
+    model_path = os.path.join(os.getcwd(), 'Saved_model.keras')
     model.save(model_path)
-    print(f"[!] Default_Model.keras is exported by default. You can convert this to other formats later on.")
+    print(f"[!] Saved_model.keras is exported by default. You can convert this to other formats later on.")
     print(f'==============================================================={ANSI.reset()}\n')
 
     if format == "":
