@@ -57,48 +57,49 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
         item_num = 0
 
         for filename in os.listdir(folder_path):
-            image_path = os.path.join(folder_path, filename)
-            
-            item_num += 1
-            progress = item_num / total_items * 100 if current_folder == folder_path else 0
+            if filename.lower().endswith(('.jpg', '.png', '.jpeg', '.bmp', '.webp')):
+                image_path = os.path.join(folder_path, filename)
+                
+                item_num += 1
+                progress = item_num / total_items * 100 if current_folder == folder_path else 0
 
-            #preprocess the image
-            img = tf.keras.preprocessing.image.load_img(image_path, target_size = input_shape)
-            img = tf.keras.preprocessing.image.img_to_array(img)
-            img = np.expand_dims(img, axis=0).astype(np.float32)
+                #preprocess the image
+                img = tf.keras.preprocessing.image.load_img(image_path, target_size = input_shape)
+                img = tf.keras.preprocessing.image.img_to_array(img)
+                img = np.expand_dims(img, axis=0).astype(np.float32)
 
-            # Run inference based on model type
-            if model_format == ".tflite":
-                model.set_tensor(model.get_input_details()[0]['index'], img)
-                model.invoke()
-                output = model.get_tensor(model.get_output_details()[0]['index'])[0]
-            elif model_format == ".h5":
-                output = model.predict(img)[0]
-            elif model_format == ".onnx":
-                input_name = model.get_inputs()[0].name
-                output_name = model.get_outputs()[0].name
-                output = model.run([output_name], {input_name: img})[0][0]
-            
-            output = np.array(output)  # ensure it's a NumPy array
+                # Run inference based on model type
+                if model_format == ".tflite":
+                    model.set_tensor(model.get_input_details()[0]['index'], img)
+                    model.invoke()
+                    output = model.get_tensor(model.get_output_details()[0]['index'])[0]
+                elif model_format == ".h5":
+                    output = model.predict(img)[0]
+                elif model_format == ".onnx":
+                    input_name = model.get_inputs()[0].name
+                    output_name = model.get_outputs()[0].name
+                    output = model.run([output_name], {input_name: img})[0][0]
+                
+                output = np.array(output)  # ensure it's a NumPy array
 
-            if len(class_names) == 2:
-                if output.shape[0] == 1:
-                    prediction = 1 if output[0] > 0.5 else 0
+                if len(class_names) == 2:
+                    if output.shape[0] == 1:
+                        prediction = 1 if output[0] > 0.5 else 0
+                    else:
+                        prediction = np.argmax(output)
                 else:
                     prediction = np.argmax(output)
-            else:
-                prediction = np.argmax(output)
 
 
-            isCorrect = (prediction == class_name_index)
-            correct += int(isCorrect)
-            total += 1
+                isCorrect = (prediction == class_name_index)
+                correct += int(isCorrect)
+                total += 1
+                
+
+                if not isCorrect:
+                    misclassified.append(f'{filename} - Predicted: {class_names[prediction]} || Actual: {className} || Filepath: {folder_path}')
             
-
-            if not isCorrect:
-                misclassified.append(f'{filename} - Predicted: {class_names[prediction]} || Actual: {className} || Filepath: {folder_path}')
-           
-            print(f'>> Scanning in progress: [{ANSI.yellow()}{progress:.0f}%{ANSI.reset()}]', end = "\r")
+                print(f'>> Scanning in progress: [{ANSI.yellow()}{progress:.0f}%{ANSI.reset()}]', end = "\r")
 
     # Calculate accuracy
     accuracy = correct / total if total > 0 else 0
