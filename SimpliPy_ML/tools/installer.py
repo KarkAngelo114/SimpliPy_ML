@@ -57,7 +57,7 @@ def self_update():
         return True
     
     elif latest_version != local_version:
-        print(f"{_ANSI.cyan()}>> New version available: {latest_version} {_ANSI.yellow()}Installed version: {local_version}){_ANSI.reset()}")
+        print(f"{_ANSI.cyan()}>> New version available: {latest_version} {_ANSI.yellow()}Installed version: {local_version}){_ANSI.reset()}\n")
 
         try:
             subprocess.check_call([
@@ -67,7 +67,7 @@ def self_update():
                 "--upgrade",
                 "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
             ])
-            print(f"{_ANSI.cyan()}>> Successfully updated from GitHub!{_ANSI.reset()}")
+            print(f"{_ANSI.cyan()}>> Successfully updated from GitHub!{_ANSI.reset()}\n")
             return True
         
         except subprocess.CalledProcessError as e:
