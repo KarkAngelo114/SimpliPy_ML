@@ -5,7 +5,7 @@
 
 - This is an open-source python library for those who wants to make models fast and easy.
 
-- Users need to install at least Python 3.10.9 version on their machine in order to run modules/libraries/frameworks that
+- Users need to install at least Python 3.8.10 version on their machine in order to run modules/libraries/frameworks that
 SimpliPy_ML relies on.
 
 ## How to install?
@@ -29,7 +29,7 @@ This library includes:
 
 ## Pre-requisites
 Pre-requisites:
-- must have at least Python 3.10.9 installed
+- must have at least Python 3.8.10 installed
 - has installed the following libraries:
     - pillow
     - tensorflow
