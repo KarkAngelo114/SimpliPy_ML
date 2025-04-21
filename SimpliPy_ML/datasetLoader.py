@@ -1,4 +1,4 @@
-from ._utils import suppressor, ANSI
+from ._utils import suppressor, _ANSI
 suppressor.suppress()
 import tensorflow as tf
 import os
@@ -29,24 +29,24 @@ def load_Image_datasets(dir, autoResize=True, input_size=(0,0), mode='', split_s
     """
     # Validate directory
     if not os.path.exists(dir):
-        raise FileNotFoundError(f"\n{ANSI.red()}>> Directory '{dir}' does not exist.{ANSI.reset()}")
+        raise FileNotFoundError(f"\n{_ANSI.red()}>> Directory '{dir}' does not exist.{_ANSI.reset()}")
 
     # Set image size based on autoResize
     if autoResize:
         image_size = (224, 224)
     else:
         if input_size == (0, 0):
-            raise ValueError(f"\n{ANSI.red()}>> input_size must be specified if autoResize is False.{ANSI.reset()}")
+            raise ValueError(f"\n{_ANSI.red()}>> input_size must be specified if autoResize is False.{_ANSI.reset()}")
         image_size = input_size
 
     if mode == '':
-        raise ValueError(f"\n{ANSI.red()}>> Mode is not specified.{ANSI.reset()}")
+        raise ValueError(f"\n{_ANSI.red()}>> Mode is not specified.{_ANSI.reset()}")
     
     if split_size == 0.0:
-        raise ValueError(f"\n{ANSI.red()}>> Split size must not be 0.0 and must be specified.{ANSI.reset()}")
+        raise ValueError(f"\n{_ANSI.red()}>> Split size must not be 0.0 and must be specified.{_ANSI.reset()}")
     
     if batch_size == 0 or batch_size <= 10:
-        raise ValueError(f"\n{ANSI.red()}>> batch size must not be 0 or less than 10.{ANSI.reset()}")
+        raise ValueError(f"\n{_ANSI.red()}>> batch size must not be 0 or less than 10.{_ANSI.reset()}")
     
     # Load training dataset
     train_dataset = tf.keras.preprocessing.image_dataset_from_directory(
@@ -76,10 +76,10 @@ def load_Image_datasets(dir, autoResize=True, input_size=(0,0), mode='', split_s
 
     # Save class names to a file in the same directory as main.py
     label_map_path = os.path.join(os.getcwd(), "label_map.txt")
-    print(f"\n>> Saving class names to {ANSI.green()}{label_map_path}{ANSI.reset()}")
+    print(f"\n>> Saving class names to {_ANSI.green()}{label_map_path}{_ANSI.reset()}")
     with open(label_map_path, "w") as f:
         for class_name in train_dataset.class_names:
             f.write(f"{class_name}\n")
-    print(f">> Successfully saved {ANSI.green()}label_map.txt{ANSI.reset()}\n")
+    print(f">> Successfully saved {_ANSI.green()}label_map.txt{_ANSI.reset()}\n")
 
     return train_dataset, validation_dataset

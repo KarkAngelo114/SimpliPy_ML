@@ -1,6 +1,11 @@
 import urllib.request
-from . import ANSI
+from . import _ANSI
 import os
+import sys
+import json
+
+if not any("__main__" in module for module in sys.modules):
+    raise ImportError("This module is for internal use only and cannot be imported directly.")
 
 # GitHub raw URL to the VERSION.txt file
 VERSION_FILE_URL = "https://raw.githubusercontent.com/KarkAngelo114/SimpliPy_ML/main/SimpliPy_ML/_utils/VERSION.txt"
@@ -30,7 +35,7 @@ def get_latest_github_version():
         with urllib.request.urlopen(VERSION_FILE_URL) as response:
             return response.read().decode().strip()
     except Exception as e:
-        print(f"{ANSI.yellow()}>> Could not fetch latest version from GitHub: {e}{ANSI.reset()}")
+        print(f"{_ANSI.yellow()}>> Could not fetch latest version from GitHub: {e}{_ANSI.reset()}")
         return None
 
 # function to get package version from PyPi
@@ -40,5 +45,5 @@ def get_latest_pypi_version(package_name):
             data = json.loads(response.read().decode())
             return data["info"]["version"]
     except Exception as e:
-        print(f"{ANSI.yellow()}>> Could not fetch latest version from PyPI: {e}{ANSI.reset()}")
+        print(f"{_ANSI.yellow()}>> Could not fetch latest version from PyPI: {e}{_ANSI.reset()}")
         return None

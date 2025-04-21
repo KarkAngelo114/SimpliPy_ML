@@ -1,4 +1,4 @@
-from ._utils import suppressor, ANSI
+from ._utils import suppressor, _ANSI
 suppressor.suppress()
 import tensorflow as tf
 from tensorflow.keras.optimizers import Adam, SGD, RMSprop, Adagrad, Adadelta, Adamax, Nadam
@@ -45,21 +45,21 @@ def build_CNN_model(train_set, val_set, allow_augmentation=False, input_shape=(2
             A compiled Keras CNN model ready for training.
     """
     if not train_set:
-        raise ValueError(f"\n{ANSI.red()}>> No training set. ")
+        raise ValueError(f"\n{_ANSI.red()}>> No training set. ")
     if not val_set:
-        raise ValueError(f"\n{ANSI.red()}>> No Validation set. {ANSI.reset()}")
+        raise ValueError(f"\n{_ANSI.red()}>> No Validation set. {_ANSI.reset()}")
     if input_shape == (0, 0, 0):
-        raise ValueError(f"\n{ANSI.red()}>> Please specify the input size {ANSI.reset()}")
+        raise ValueError(f"\n{_ANSI.red()}>> Please specify the input size {_ANSI.reset()}")
     if num_Conv_layers == 0:
-        raise ValueError(f"\n{ANSI.red()}>> Convolutional layers must not be 0 {ANSI.reset()}")
+        raise ValueError(f"\n{_ANSI.red()}>> Convolutional layers must not be 0 {_ANSI.reset()}")
     if num_Dense_layers == 0:
-        raise ValueError(f"\n{ANSI.red()}>> Dense layers must not be 0")
+        raise ValueError(f"\n{_ANSI.red()}>> Dense layers must not be 0")
     if output_neuron == 0:
-        raise ValueError(f"\n{ANSI.red()}>> Output Neuron cannot be empty or 0 {ANSI.reset()}")
+        raise ValueError(f"\n{_ANSI.red()}>> Output Neuron cannot be empty or 0 {_ANSI.reset()}")
     if activation_function == "":
-        raise ValueError(f"\n{ANSI.red()}>> Enter activation function that will be use across the hidden layers. {ANSI.reset()}")
+        raise ValueError(f"\n{_ANSI.red()}>> Enter activation function that will be use across the hidden layers. {_ANSI.reset()}")
     if output_activation == '':
-        raise ValueError(f"\n{ANSI.red()}>> Enter activation function that will be use in the output neuron.{ANSI.reset()}")
+        raise ValueError(f"\n{_ANSI.red()}>> Enter activation function that will be use in the output neuron.{_ANSI.reset()}")
 
     # Prefetching for performance
     AUTOTUNE = tf.data.AUTOTUNE
@@ -106,7 +106,7 @@ def build_CNN_model(train_set, val_set, allow_augmentation=False, input_shape=(2
 
     model = tf.keras.Sequential(model_layers)
 
-    print(f"{ANSI.yellow()}\n================= Preparing your model ====================={ANSI.reset()}")
+    print(f"{_ANSI.yellow()}\n================= Preparing your model ====================={_ANSI.reset()}")
     print("Model's Architecture: ")
     print('Input Shape: ', input_shape)
     print("Number of Convolutional layers: ",num_Conv_layers)
@@ -151,13 +151,13 @@ def train_CNN_model(model, train_data, val_data, optimizer, loss_function, learn
             - 'mse', 'mae' <- for regression tasks only
     """
     if optimizer == "":
-        raise ValueError(F"\n{ANSI.red()}>> Specify the optimizer (ex: adam, nadam, sgd, rmsprop, adagrad, adadelta){ANSI.reset()}")
+        raise ValueError(F"\n{_ANSI.red()}>> Specify the optimizer (ex: adam, nadam, sgd, rmsprop, adagrad, adadelta){_ANSI.reset()}")
     if loss_function == "":
-        raise ValueError(F"\n{ANSI.red()}>> Specify the loss function (ex: binary_crossentropy, categorical_crossentropy, sparse_categorical_crossentropy, ['mse', 'mae']){ANSI.reset()}")
+        raise ValueError(F"\n{_ANSI.red()}>> Specify the loss function (ex: binary_crossentropy, categorical_crossentropy, sparse_categorical_crossentropy, ['mse', 'mae']){_ANSI.reset()}")
     if len(metrics) == 0:
-        raise ValueError(F"\n{ANSI.red()}>> Specify the Metrics (ex: ['accuracy'], ['precision', 'recall', 'AUC'], ['mse', 'mae']){ANSI.reset()}")
+        raise ValueError(F"\n{_ANSI.red()}>> Specify the Metrics (ex: ['accuracy'], ['precision', 'recall', 'AUC'], ['mse', 'mae']){_ANSI.reset()}")
     if epoch == 0 or epoch < 2:
-        raise ValueError(F"\n{ANSI.red()}>> Epoch must not below 10 or 0 at all{ANSI.reset()}")
+        raise ValueError(F"\n{_ANSI.red()}>> Epoch must not below 10 or 0 at all{_ANSI.reset()}")
     
     if isinstance(optimizer, str):
         optimizer = optimizer.lower()
@@ -177,7 +177,7 @@ def train_CNN_model(model, train_data, val_data, optimizer, loss_function, learn
             elif optimizer == "adadelta":
                 optimizer = Adadelta(learning_rate=learning_rate)
             else:
-                raise ValueError(f"\n{ANSI.red()}>> Unknown optimizer: {optimizer}")
+                raise ValueError(f"\n{_ANSI.red()}>> Unknown optimizer: {optimizer}")
         else:
             # Use default learning rate
             if optimizer == "adam":
@@ -197,7 +197,7 @@ def train_CNN_model(model, train_data, val_data, optimizer, loss_function, learn
             else:
                 raise ValueError(f"\n>> Unknown optimizer: {optimizer}")
 
-    print(f"\n{ANSI.green()}============== Your model is now training 😍 =============={ANSI.reset()}\n")
+    print(f"\n{_ANSI.green()}============== Your model is now training 😍 =============={_ANSI.reset()}\n")
     model.compile(
         optimizer = optimizer,
         loss = loss_function,

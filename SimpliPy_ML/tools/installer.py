@@ -1,6 +1,6 @@
 import sys
 import subprocess
-from .._utils import ANSI, __pkg_ver__
+from .._utils import _ANSI, __pkg_ver__
 from importlib.metadata import version as get_installed_version  # Python 3.8+
 
 # Constants
@@ -13,16 +13,16 @@ def self_update():
     Checks the current installed version of SimpliPy_ML and updates it if a newer version is found on PyPI. Falls back to GitHub if needed.
     """
     print("\n=================================")
-    print(f"{ANSI.cyan()}>> Checking for updates for {ANSI.yellow()}{PACKAGE_NAME}{ANSI.reset()}\n")
+    print(f"{_ANSI.cyan()}>> Checking for updates for {_ANSI.yellow()}{PACKAGE_NAME}{_ANSI.reset()}\n")
 
     try:
         installed_version = get_installed_version(PACKAGE_NAME)
         latest_version = __pkg_ver__.get_latest_pypi_version(PACKAGE_NAME)
 
         if latest_version is None:
-            print(f"{ANSI.yellow()}>> Skipping PyPI check. Trying GitHub...{ANSI.reset()}")
+            print(f"{_ANSI.yellow()}>> Skipping PyPI check. Trying GitHub...{_ANSI.reset()}")
         elif latest_version > installed_version:
-            print(f"{ANSI.green()}>> New version available on PyPI: {latest_version} Installed Version: {installed_version}){ANSI.reset()}")
+            print(f"{_ANSI.green()}>> New version available on PyPI: {latest_version} Installed Version: ({installed_version}){_ANSI.reset()}")
             subprocess.check_call([
                 sys.executable,
                 "-m", "pip",
@@ -30,15 +30,15 @@ def self_update():
                 "--upgrade",
                 PACKAGE_NAME
             ])
-            print(f"{ANSI.green()}>> Successfully updated from PyPI! Please restart the application.{ANSI.reset()}")
+            print(f"{_ANSI.green()}>> Successfully updated from PyPI! Please restart the application.{_ANSI.reset()}")
             return True
         else:
-            print(f"{ANSI.cyan()}>> Already up-to-date on PyPI: {installed_version}{ANSI.reset()}")
+            print(f"{_ANSI.cyan()}>> Already up-to-date on PyPI: {installed_version}{_ANSI.reset()}")
             return True
 
     except Exception as e:
-        print(f"{ANSI.yellow()}>> PyPI update failed or not available: {e}{ANSI.reset()}")
-        print(f"{ANSI.yellow()}>> Trying to update from GitHub...{ANSI.reset()}")
+        print(f"{_ANSI.yellow()}>> PyPI update failed or not available: {e}{_ANSI.reset()}")
+        print(f"{_ANSI.yellow()}>> Trying to update from GitHub...{_ANSI.reset()}")
     
     print("\n=================================")
 
@@ -46,18 +46,18 @@ def self_update():
     latest_version = __pkg_ver__.get_latest_github_version()
 
     if latest_version is None:
-        print(f"{ANSI.yellow()}>> Could not fetch latest version from GitHub. Skipping update.{ANSI.reset()}")
+        print(f"{_ANSI.yellow()}>> Could not fetch latest version from GitHub. Skipping update.{_ANSI.reset()}")
         return False
 
     elif local_version is None:
-        print(f"{ANSI.yellow()}>> Local version unknown. Unable to update{ANSI.reset()}")
+        print(f"{_ANSI.yellow()}>> Local version unknown. Unable to update{_ANSI.reset()}")
 
     elif latest_version == local_version:
-        print(f"{ANSI.cyan()}>> Already up-to-date: {ANSI.yellow()}{latest_version}{ANSI.reset()}")
+        print(f"{_ANSI.cyan()}>> Already up-to-date: {_ANSI.yellow()}{latest_version}{_ANSI.reset()}")
         return True
     
     elif latest_version != local_version:
-        print(f"{ANSI.cyan()}>> New version available: {latest_version} {ANSI.yellow()}Installed version: {local_version}){ANSI.reset()}")
+        print(f"{_ANSI.cyan()}>> New version available: {latest_version} {_ANSI.yellow()}Installed version: {local_version}){_ANSI.reset()}")
 
         try:
             subprocess.check_call([
@@ -67,11 +67,11 @@ def self_update():
                 "--upgrade",
                 "git+https://github.com/KarkAngelo114/SimpliPy_ML.git"
             ])
-            print(f"{ANSI.cyan()}>> Successfully updated from GitHub!{ANSI.reset()}")
+            print(f"{_ANSI.cyan()}>> Successfully updated from GitHub!{_ANSI.reset()}")
             return True
         
         except subprocess.CalledProcessError as e:
-            print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
+            print(f"{_ANSI.red()}>> Update failed from both sources: {e}{_ANSI.reset()}")
             return False
 
 def package_install(package_name):
@@ -87,7 +87,7 @@ def package_install(package_name):
     try:
         if package_name == "*":
             print("\n=================================")
-            print(f"{ANSI.cyan()}>> Installing all required libraries...{ANSI.reset()}")
+            print(f"{_ANSI.cyan()}>> Installing all required libraries...{_ANSI.reset()}")
             subprocess.check_call([
                 sys.executable, "-m", "pip", "install", 
                 "tensorflow", "keras", "numpy", "matplotlib", 
@@ -97,23 +97,23 @@ def package_install(package_name):
 
         elif package_name.lower() in dependencies:
             print("\n=================================")
-            print(f"{ANSI.cyan()}>> Installing {package_name}...{ANSI.reset()}")
+            print(f"{_ANSI.cyan()}>> Installing {package_name}...{_ANSI.reset()}")
             subprocess.check_call([sys.executable, "-m", "pip", "install", package_name])
         
 
         if package_name != "" and package_name in dependencies:
-            print(f"{ANSI.green()}>> Successfully installed {package_name}{ANSI.reset()}")
+            print(f"{_ANSI.green()}>> Successfully installed {package_name}{_ANSI.reset()}")
             return True
 
         elif package_name == "*":
-            print(f"{ANSI.green()}>> Successfully installed all libraries{ANSI.reset()}")
+            print(f"{_ANSI.green()}>> Successfully installed all libraries{_ANSI.reset()}")
             return True
 
         elif package_name != "" and package_name not in dependencies:
-            print(f"{ANSI.red()}>> {package_name} is not in it's dependencies.{ANSI.reset()}")
+            print(f"{_ANSI.red()}>> {package_name} is not in it's dependencies.{_ANSI.reset()}")
             return False
 
        
     except subprocess.CalledProcessError as e:
-        print(f"{ANSI.red()}>> Failed to install {package_name}: {e}{ANSI.reset()}")
+        print(f"{_ANSI.red()}>> Failed to install {package_name}: {e}{_ANSI.reset()}")
         return False

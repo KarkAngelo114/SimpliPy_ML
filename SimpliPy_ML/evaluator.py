@@ -1,4 +1,4 @@
-from ._utils import suppressor, ANSI, ModelType
+from ._utils import suppressor, _ANSI, ModelType
 suppressor.suppress()
 import os
 import numpy as np
@@ -26,11 +26,11 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
     """
 
     if not dir:
-        raise ValueError(f"\n{ANSI.red()}>> Please specify the directory and ensure that it exists")
+        raise ValueError(f"\n{_ANSI.red()}>> Please specify the directory and ensure that it exists")
     if not labels:
-        raise ValueError(f"\n{ANSI.red()}>> Please enter the name of the text file that has the label names. ")
+        raise ValueError(f"\n{_ANSI.red()}>> Please enter the name of the text file that has the label names. ")
     if not model_name:
-        raise ValueError(f"\n{ANSI.red()}>> No Model to be evaluated")
+        raise ValueError(f"\n{_ANSI.red()}>> No Model to be evaluated")
     
     model, model_format = ModelType.getModelType(model_name) # get the loaded model and the file type
     class_names = []
@@ -99,7 +99,7 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
                 if not isCorrect:
                     misclassified.append(f'{filename} - Predicted: {class_names[prediction]} || Actual: {className} || Filepath: {folder_path}')
             
-                print(f'>> Scanning in progress: [{ANSI.yellow()}{progress:.0f}%{ANSI.reset()}]', end = "\r")
+                print(f'>> Scanning in progress: [{_ANSI.yellow()}{progress:.0f}%{_ANSI.reset()}]', end = "\r")
 
     # Calculate accuracy
     accuracy = correct / total if total > 0 else 0
@@ -109,11 +109,11 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
     if len(misclassified) > 0:
         # Show misclassified data if there is/are any
         print('\n==== Misclassified ====')
-        print(f"No. of misclassified: {ANSI.red()}",len(misclassified), f'{ANSI.reset()}\n')
+        print(f"No. of misclassified: {_ANSI.red()}",len(misclassified), f'{_ANSI.reset()}\n')
         for incorrect in misclassified:
             print(incorrect)
         print('')
     else:
-        print(f'{ANSI.green()}\m=== No Misclassified data ==={ANSI.reset()}\n')
+        print(f'{_ANSI.green()}\m=== No Misclassified data ==={_ANSI.reset()}\n')
 
 

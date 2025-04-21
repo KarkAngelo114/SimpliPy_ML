@@ -1,3 +1,7 @@
+import sys
+
+if not any("__main__" in module for module in sys.modules):
+    raise ImportError("This module is for internal use only and cannot be imported directly.")
 
 def red():
     return '\033[91m'

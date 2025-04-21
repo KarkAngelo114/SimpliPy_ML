@@ -1,7 +1,10 @@
-
 import os
 import tensorflow as tf
-from .ANSI import *
+from ._ANSI import *
+import sys
+
+if not any("__main__" in module for module in sys.modules):
+    raise ImportError("This module is for internal use only and cannot be imported directly.")
 
 def getModelType(model):
     """
