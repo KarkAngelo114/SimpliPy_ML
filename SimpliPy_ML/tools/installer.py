@@ -1,6 +1,6 @@
 import sys
 import subprocess
-from ..__utils__ import ANSI, __pkg_ver__
+from .._utils import ANSI, __pkg_ver__
 from importlib.metadata import version as get_installed_version  # Python 3.8+
 
 # Constants

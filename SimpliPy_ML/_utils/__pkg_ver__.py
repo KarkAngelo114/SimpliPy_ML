@@ -3,7 +3,7 @@ from . import ANSI
 import os
 
 # GitHub raw URL to the VERSION.txt file
-VERSION_FILE_URL = "https://raw.githubusercontent.com/KarkAngelo114/SimpliPy_ML/main/SimpliPy_ML/__utils__/VERSION.txt"
+VERSION_FILE_URL = "https://raw.githubusercontent.com/KarkAngelo114/SimpliPy_ML/main/SimpliPy_ML/_utils/VERSION.txt"
 
 
 # Utility to get installed version (if __version__ isn't available, fallback to custom solution)

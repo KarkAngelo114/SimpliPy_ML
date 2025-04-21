@@ -1,4 +1,4 @@
-from .__utils__ import suppressor, ANSI, ModelType
+from ._utils import suppressor, ANSI, ModelType
 suppressor.suppress()
 import os
 import numpy as np

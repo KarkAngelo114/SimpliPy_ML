@@ -1,4 +1,4 @@
-from .__utils__ import suppressor, ANSI
+from ._utils import suppressor, ANSI
 suppressor.suppress()
 import tensorflow as tf
 from tensorflow.keras.optimizers import Adam, SGD, RMSprop, Adagrad, Adadelta, Adamax, Nadam
