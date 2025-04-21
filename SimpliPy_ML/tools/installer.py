@@ -1,8 +1,5 @@
-import os
 import sys
 import subprocess
-import json
-import urllib.request
 from ..__utils__ import ANSI, __pkg_ver__
 from importlib.metadata import version as get_installed_version  # Python 3.8+
 
@@ -10,7 +7,7 @@ from importlib.metadata import version as get_installed_version  # Python 3.8+
 PACKAGE_NAME = "SimpliPy_ML"
 
 #Self-updating function. Call this from the main python file or whatever the name of the python file is.
-#Calling this will update the library without using CMD to update SimpliPy_ML.. It will check first if there's an updates from PyPi, otherwise get updates from github
+#Calling this will update the library without using CMD to update SimpliPy_ML. It will check first if there's an updates from PyPi, otherwise get updates from github
 def self_update():
     """
     Checks the current installed version of SimpliPy_ML and updates it if a newer version is found on PyPI. Falls back to GitHub if needed.
@@ -44,7 +41,6 @@ def self_update():
         print(f"{ANSI.yellow()}>> Trying to update from GitHub...{ANSI.reset()}")
     
     print("\n=================================")
-    print(f"{ANSI.cyan()}>> Checking for updates for {ANSI.yellow()}{PACKAGE_NAME}{ANSI.reset()}\n")
 
     local_version = __pkg_ver__.get_local_version()
     latest_version = __pkg_ver__.get_latest_github_version()
@@ -55,9 +51,11 @@ def self_update():
 
     elif local_version is None:
         print(f"{ANSI.yellow()}>> Local version unknown. Unable to update{ANSI.reset()}")
+
     elif latest_version == local_version:
         print(f"{ANSI.cyan()}>> Already up-to-date: {ANSI.yellow()}{latest_version}{ANSI.reset()}")
         return True
+    
     elif latest_version != local_version:
         print(f"{ANSI.cyan()}>> New version available: {latest_version} {ANSI.yellow()}Installed version: {local_version}){ANSI.reset()}")
 
@@ -71,6 +69,7 @@ def self_update():
             ])
             print(f"{ANSI.cyan()}>> Successfully updated from GitHub!{ANSI.reset()}")
             return True
+        
         except subprocess.CalledProcessError as e:
             print(f"{ANSI.red()}>> Update failed from both sources: {e}{ANSI.reset()}")
             return False
