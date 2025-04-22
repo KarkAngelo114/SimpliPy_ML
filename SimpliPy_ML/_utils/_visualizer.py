@@ -2,6 +2,7 @@ from sklearn.metrics import confusion_matrix, roc_auc_score, roc_curve
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
+import numpy as np # Import numpy
 
 def Visualize(actual_label_list, predicted_label_list, class_names, prediction_score_list, labels):
     # confusion matrix
@@ -20,18 +21,26 @@ def Visualize(actual_label_list, predicted_label_list, class_names, prediction_s
     plt.show()
 
     # ROC Curve + AUC Score
-    fpr, tpr, _ = roc_curve(actual_label_list, prediction_score_list)
-    auc = roc_auc_score(actual_label_list, prediction_score_list)
+    if len(class_names) == 2:
+        # Ensure actual_label_list is binary (0 and 1)
+        unique_labels = np.unique(actual_label_list)
+        if len(unique_labels) == 2:
+            fpr, tpr, _ = roc_curve(actual_label_list, prediction_score_list)
+            auc = roc_auc_score(actual_label_list, prediction_score_list)
 
-    plt.figure(figsize=(6, 4))
-    plt.plot(fpr, tpr, label=f"AUC = {auc:.2f}")
-    plt.plot([0, 1], [0, 1], linestyle='--', color='gray')
-    plt.xlabel("False Positive Rate")
-    plt.ylabel("True Positive Rate")
-    plt.title("AUC Curve")
-    plt.legend()
-    plt.tight_layout()
-    plt.show()
+            plt.figure(figsize=(6, 4))
+            plt.plot(fpr, tpr, label=f"AUC = {auc:.2f}")
+            plt.plot([0, 1], [0, 1], linestyle='--', color='gray')
+            plt.xlabel("False Positive Rate")
+            plt.ylabel("True Positive Rate")
+            plt.title("AUC Curve")
+            plt.legend()
+            plt.tight_layout()
+            plt.show()
+        else:
+            print("Warning: AUC and ROC curve are designed for binary classification. Found more than two unique labels.")
+    else:
+        print("AUC and ROC curve are designed for binary classification.")
 
     # Step 1: Define label names (adjust as needed).
     with open(labels, "r") as f:
