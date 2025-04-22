@@ -14,16 +14,12 @@ def Image_classifier(dir, labels, model_name, input_shape):
         Paramerters:
             dir: specify the directory of the test sets that contains images that will be use for evaluaation of image classification model
 
-            labels: labels will be use as bases for evaluation. The folder names used in training and containing the images are usually used as class names
-                    be sure that folder names that contains the images for model evaluation matches what is in the label_map.txt.
-                    You need to emter the filename of the text file that contains the label names
+            labels (str): labels will be use as bases for evaluation. The folder names used in training and containing the images are usually used as class namesbe sure that folder names that contains the images for model evaluation matches what is in the label_map.txt. You need to emter the filename of the text file that contains the label names
 
             model: load the model to be evaluated
 
             input_shape: specify the input_shape when loading the dataset, and training the model
                     (ex: if you train the model in 224,224 or 224x224, then you need to input the same image shape)
-
-            visualize (bool): if set to True, a pop-up window will appear to visualized the performance of the model.
 
     """
 
