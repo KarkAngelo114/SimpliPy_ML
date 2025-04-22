@@ -28,12 +28,12 @@ def Visualize(actual_label_list, predicted_label_list, class_names, prediction_s
     plt.plot([0, 1], [0, 1], linestyle='--', color='gray')
     plt.xlabel("False Positive Rate")
     plt.ylabel("True Positive Rate")
-    plt.title("ROC Curve")
+    plt.title("AUC Curve")
     plt.legend()
     plt.tight_layout()
     plt.show()
 
-    # Step 1: Define label names (adjust as needed). This bar graph is for my model
+    # Step 1: Define label names (adjust as needed).
     with open(labels, "r") as f:
         raw_class_names = [line.strip() for line in f.readlines()]
 
