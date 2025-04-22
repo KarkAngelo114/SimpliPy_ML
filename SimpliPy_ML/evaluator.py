@@ -124,7 +124,7 @@ def Image_classifier(dir, labels, model_name, input_shape):
             print(incorrect)
         print('')
     else:
-        print(f'{_ANSI.green()}\m=== No Misclassified data ==={_ANSI.reset()}\n')
+        print(f'{_ANSI.green()}\n=== No Misclassified data ==={_ANSI.reset()}\n')
 
     # Display classification report
     print("=== Classification Report ===")
