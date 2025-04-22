@@ -1,4 +1,5 @@
 import sys
+from .._utils import _ANSI, __pkg_ver__
 
 def checkVersion():
     required_min_version = (3, 9)
@@ -13,3 +14,9 @@ def checkVersion():
 
 def checkInfo():
     print("\nPython version info: ",sys.version_info)
+
+def current_pkg_ver():
+    local_ver = __pkg_ver__.get_local_version()
+
+    print("\n======================================")
+    print(f"{_ANSI.cyan()}SimpliPy_ML version {_ANSI.yellow()}{local_ver}{_ANSI.reset()}")

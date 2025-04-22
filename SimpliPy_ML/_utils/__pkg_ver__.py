@@ -13,13 +13,6 @@ VERSION_FILE_URL = "https://raw.githubusercontent.com/KarkAngelo114/SimpliPy_ML/
 
 # Utility to get installed version (if __version__ isn't available, fallback to custom solution)
 def get_local_version():
-    try:
-        # Try importing __version__
-        from SimpliPy_ML import __version__
-        return __version__
-    except ImportError:
-        pass
-
     # Fallback to reading from bundled VERSION.txt
     try:
         # Get the path to the VERSION.txt inside the installed package
