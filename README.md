@@ -55,11 +55,8 @@ installer.package_install('*')
 ```
 
 ## WHAT'S NEW??
- - added a failsafe mechanism when exporting models. The exported model is in .keras file format which can be converted to other formats later on. The feature will ensure that the model will be save before any problem in exporting the model (ex: forgot to name the model, specify the format, etc.)
+ - can now visualize the model's performance
 
-## FIXES
- - self update function not getting updates from github repo -> FIXED
- - incorrectly saving files to wrong directoy instead to the current working directory -> FIXED
 
 Read the documentation how to use SimpliPy_ML.
 

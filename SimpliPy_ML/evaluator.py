@@ -1,12 +1,14 @@
-from ._utils import suppressor, _ANSI, ModelType
+from ._utils import suppressor, _ANSI, ModelType, _visualizer
 suppressor.suppress()
 import os
 import numpy as np
 import tensorflow as tf
 from PIL import Image
+from sklearn.metrics import classification_report
+import matplotlib.pyplot as plt
 
 
-def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
+def Image_classifier(dir, labels, model_name, input_shape):
     """
 
         Paramerters:
@@ -46,14 +48,20 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
     item_num = 0
     misclassified = []
 
-    for className in class_names:
-        class_name_index = class_names.index(className)
+    actual_label_list = []
+    predicted_label_list = []
+    prediction_score_list = []
+
+    for class_name_index, className in enumerate(class_names):
         folder_path = os.path.join(dir, className)
 
         print(f"\n\n📂 Scanning folder: {folder_path}")
 
         total_items = len(os.listdir(folder_path))
-        current_folder = folder_path
+        if total_items == 0:
+            print(f"⚠️ {_ANSI.red()}Skipping empty folder: {folder_path}{_ANSI.reset()}")
+            continue
+
         item_num = 0
 
         for filename in os.listdir(folder_path):
@@ -61,10 +69,10 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
                 image_path = os.path.join(folder_path, filename)
                 
                 item_num += 1
-                progress = item_num / total_items * 100 if current_folder == folder_path else 0
+                progress = item_num / total_items * 100
 
-                #preprocess the image
-                img = tf.keras.preprocessing.image.load_img(image_path, target_size = input_shape)
+                # Preprocess the image
+                img = tf.keras.preprocessing.image.load_img(image_path, target_size=input_shape)
                 img = tf.keras.preprocessing.image.img_to_array(img)
                 img = np.expand_dims(img, axis=0).astype(np.float32)
 
@@ -79,8 +87,8 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
                     input_name = model.get_inputs()[0].name
                     output_name = model.get_outputs()[0].name
                     output = model.run([output_name], {input_name: img})[0][0]
-                
-                output = np.array(output)  # ensure it's a NumPy array
+
+                output = np.array(output)  # Ensure it's a NumPy array
 
                 if len(class_names) == 2:
                     if output.shape[0] == 1:
@@ -90,16 +98,18 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
                 else:
                     prediction = np.argmax(output)
 
-
                 isCorrect = (prediction == class_name_index)
                 correct += int(isCorrect)
                 total += 1
-                
 
-                if not isCorrect:
+                actual_label_list.append(class_name_index)
+                predicted_label_list.append(prediction)
+                prediction_score_list.append(output[prediction] if prediction < len(output) else 0)
+
+                if not isCorrect and prediction < len(class_names):
                     misclassified.append(f'{filename} - Predicted: {class_names[prediction]} || Actual: {className} || Filepath: {folder_path}')
             
-                print(f'>> Scanning in progress: [{_ANSI.yellow()}{progress:.0f}%{_ANSI.reset()}]', end = "\r")
+                print(f'>> Scanning in progress: [{_ANSI.yellow()}{progress:.0f}%{_ANSI.reset()}]', end="\r")
 
     # Calculate accuracy
     accuracy = correct / total if total > 0 else 0
@@ -115,5 +125,13 @@ def Image_classifier(dir, labels, model_name, input_shape, visualize = False):
         print('')
     else:
         print(f'{_ANSI.green()}\m=== No Misclassified data ==={_ANSI.reset()}\n')
+
+    # Display classification report
+    print("=== Classification Report ===")
+    print(classification_report(actual_label_list, predicted_label_list, target_names=[names.replace("_", " ") for names in class_names]))
+
+    _visualizer.Visualize(actual_label_list, predicted_label_list, class_names, prediction_score_list, labels)
+    
+
 
 

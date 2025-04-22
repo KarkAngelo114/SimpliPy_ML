@@ -116,12 +116,14 @@ def build_CNN_model(train_set, val_set, allow_augmentation=False, input_shape=(2
 
     return model, train_ds, val_ds # returns the model and other parameters ready for training
 
+
+
 def train_CNN_model(model, train_data, val_data, optimizer, loss_function, learning_rate = None, metrics = [], epoch = 0):
     """
     Parameters:
-        train_ds: pass the train_ds returned from the build_CNN_model() function to this parameter
+        train_data: pass the train_ds returned from the build_CNN_model() function to this parameter
 
-        val_ds: pass the val_ds returned from the build_CNN_model() function to this parameter
+        val_data: pass the val_ds returned from the build_CNN_model() function to this parameter
 
         epoch: Determines the epoch where the model will iterate through the entire training set epoch strictly should not below 10
 
