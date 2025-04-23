@@ -1,0 +1,20 @@
+This Python library SimpliPy_ML is licensed under the MIT License.
+A copy of this license is included in the file LICENSE.
+
+This library also relies on and uses the following separate libraries:
+
+TensorFlow
+Copyright 2024 The TensorFlow Authors. All Rights Reserved.
+Licensed under the Apache License, Version 2.0 (the "License");
+a copy of this license is included in the file LICENSE-APACHE2.
+
+Keras (integrated within TensorFlow)
+This library utilizes Keras, which is now a high-level API integrated directly into TensorFlow. As such, its use is covered under the Apache License, Version 2.0, a copy of which is included in the file LICENSE-APACHE2.
+
+---
+
+**Important Notes:**
+
+* This library does not include TensorFlow or Keras. Users must install these dependencies separately.
+* For the full terms and conditions of the MIT License, please refer to the file LICENSE included in this distribution.
+* For the full terms and conditions of the Apache License 2.0, please refer to the file LICENSE-APACHE2 included in this distribution.

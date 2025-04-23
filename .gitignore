@@ -1,0 +1,12 @@
+__pycache__/
+datasets/
+TestSets/
+*.tflite
+*.h5
+label_map.txt
+Test1.py
+testEvaluate.py
+testImport.py
+main.py
+.venv
+package_installer.py
