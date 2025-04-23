@@ -1,10 +1,10 @@
 from sklearn.metrics import confusion_matrix, roc_auc_score, roc_curve
 import matplotlib.pyplot as plt
-import seaborn as sns
-import pandas as pd
-import numpy as np # Import numpy
 
 def Visualize(actual_label_list, predicted_label_list, class_names, prediction_score_list, labels):
+    import seaborn as sns
+    import pandas as pd
+    import numpy as np # Import numpy
     # confusion matrix
     cm = confusion_matrix(actual_label_list, predicted_label_list)
 
