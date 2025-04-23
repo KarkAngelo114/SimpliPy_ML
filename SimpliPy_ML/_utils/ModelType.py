@@ -2,9 +2,13 @@ import os
 import tensorflow as tf
 from ._ANSI import *
 import sys
+from keras.utils import custom_object_scope
 
-if not any("__main__" in module for module in sys.modules):
-    raise ImportError("This module is for internal use only and cannot be imported directly.")
+class MeanMaxPooling(tf.keras.layers.Layer):
+    def __init__(self, **kwargs):
+        super(MeanMaxPooling, self).__init__(**kwargs)
+    def call(self, inputs):
+        return (tf.reduce_mean(inputs, axis=1) + tf.reduce_max(inputs, axis=1)) / 2
 
 def getModelType(model):
     """
@@ -22,8 +26,9 @@ def getModelType(model):
         interpreter = tf.lite.Interpreter(model_path = model)
         interpreter.allocate_tensors()
         return interpreter, '.tflite'
-    elif file_extension ==  ".h5":
-        model = tf.keras.models.load_model(model)
+    elif file_extension == ".h5":
+        with custom_object_scope({'MeanMaxPooling': MeanMaxPooling}):
+            model = tf.keras.models.load_model(model)
         return model, '.h5'
     elif file_extension == ".onnx":
         try:
