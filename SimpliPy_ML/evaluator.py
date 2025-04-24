@@ -266,6 +266,6 @@ def multi_evaluate(dir, labels, input_shape, models = []):
         # Print the table using tabulate
         print(tabulate(table_data, headers=headers, tablefmt="grid"))
     
-    except:
-        print(f'{_ANSI.red()}\n[!] Unable to tabulate data, please install "tabulate" library first using pip or using the SimpliPy_ML own package installer function.{_ANSI.reset()}\n')
+    except Exception as e:
+        print(f'{_ANSI.red()}\n[!] Error\n{e}{_ANSI.reset()}\n')
     
