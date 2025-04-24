@@ -82,7 +82,7 @@ def package_install(package_name):
 
     dependencies = ["tensorflow", "keras", "numpy", "matplotlib", 
                 "pillow", "scikit-learn", "keras2onnx", 
-                "onnxruntime", "onnx", "seaborn"]
+                "onnxruntime", "onnx", "seaborn", 'tabulate']
 
     try:
         if package_name == "*":
@@ -92,7 +92,7 @@ def package_install(package_name):
                 sys.executable, "-m", "pip", "install", 
                 "tensorflow", "keras", "numpy", "matplotlib", 
                 "pillow", "scikit-learn", "keras2onnx", 
-                "onnxruntime", "onnx", "seaborn"
+                "onnxruntime", "onnx", "seaborn", 'tabulate'
             ])
 
         elif package_name.lower() in dependencies:

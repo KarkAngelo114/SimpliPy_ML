@@ -1,4 +1,5 @@
 from ._utils import suppressor, _ANSI
+from ._coreProcesses import export
 suppressor.suppress()
 import tensorflow as tf
 import os
@@ -35,8 +36,6 @@ def exporter(model, model_name, format):
     if not model_name:
         raise ValueError(f"{_ANSI.red()}>> Enter the model name before saving..{_ANSI.reset()}")
     
-    
-
 
     if format == "h5":
         path = os.path.join(os.getcwd(), f"{model_name}.h5")
@@ -68,3 +67,13 @@ def exporter(model, model_name, format):
             print(f"{_ANSI.red()}[✘] ONNX export failed. Please install keras2onnx and onnx with pip.{_ANSI.reset()}")
     else:
         raise ValueError(f"{_ANSI.red()}[✘] Unsupported export format: {format}{_ANSI.reset()}")
+    
+def export_all_types(model):
+    """
+        Export the trained model in all formats.
+    """
+
+    print("\n'===============================================================")
+    print(f"{_ANSI.cyan()}>> Saving model in all formats...{_ANSI.reset()}\n")
+    export.export(model)
+

@@ -8,7 +8,7 @@ import os
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-def build_CNN_model(train_set, val_set, allow_augmentation=False, input_shape=(224, 224, 3), num_Conv_layers = 3, num_Dense_layers = 1, output_neuron=0, activation_function='', output_activation=''):
+def build_CNN_model(train_set, val_set, allow_augmentation=False, input_shape=(224, 224, 3), num_Conv_layers = 3, num_Dense_layers = 1, output_neuron=0, activation_function='', output_activation='', showModelSummary = False):
     """
     Builds a Convolutional Neural Network (CNN) model for image classification.
 
@@ -40,6 +40,8 @@ def build_CNN_model(train_set, val_set, allow_augmentation=False, input_shape=(2
         output_activation (str): Activation function for the output layer.
             - For binary: usually 'sigmoid'
             - For multiclass: usually 'softmax'
+        
+        showModelSummary (bool): shows the summary of the model before training
 
         Returns:
             A compiled Keras CNN model ready for training.
@@ -80,12 +82,24 @@ def build_CNN_model(train_set, val_set, allow_augmentation=False, input_shape=(2
     if allow_augmentation:
         model_layers.append(data_augmentation)
 
-    # Convolutional layers
+    # Convolutional layers with safeguards
     filters = 32
+    current_height, current_width = input_shape[:2]
+
     for _ in range(num_Conv_layers):
-        model_layers.append(layers.Conv2D(filters, (3, 3), activation=activation_function))
-        model_layers.append(layers.MaxPooling2D())
-        filters *= 2
+        # Add Conv2D layer
+        model_layers.append(layers.Conv2D(filters, (3, 3), activation=activation_function, padding='same'))
+        
+        # Add MaxPooling2D layer only if spatial dimensions are large enough
+        if current_height > 2 and current_width > 2:
+            model_layers.append(layers.MaxPooling2D())
+            current_height //= 2
+            current_width //= 2
+        else:
+            print(f"Skipping MaxPooling2D to prevent spatial dimensions from shrinking below (1, 1).")
+        
+        # Cap the number of filters to avoid excessive growth
+        filters = min(filters * 2, 512)
 
     # Flatten before any dense layers
     model_layers.append(layers.Flatten())
@@ -105,6 +119,9 @@ def build_CNN_model(train_set, val_set, allow_augmentation=False, input_shape=(2
     model_layers.append(layers.Dense(output_neuron, activation=output_activation))
 
     model = tf.keras.Sequential(model_layers)
+    if showModelSummary:
+        model.summary() 
+
 
     print(f"{_ANSI.yellow()}\n================= Preparing your model ====================={_ANSI.reset()}")
     print("Model's Architecture: ")
@@ -158,7 +175,7 @@ def train_CNN_model(model, train_data, val_data, optimizer, loss_function, learn
         raise ValueError(F"\n{_ANSI.red()}>> Specify the loss function (ex: binary_crossentropy, categorical_crossentropy, sparse_categorical_crossentropy, ['mse', 'mae']){_ANSI.reset()}")
     if len(metrics) == 0:
         raise ValueError(F"\n{_ANSI.red()}>> Specify the Metrics (ex: ['accuracy'], ['precision', 'recall', 'AUC'], ['mse', 'mae']){_ANSI.reset()}")
-    if epoch == 0 or epoch < 2:
+    if epoch == 0 or epoch < 10:
         raise ValueError(F"\n{_ANSI.red()}>> Epoch must not below 10 or 0 at all{_ANSI.reset()}")
     
     if isinstance(optimizer, str):
