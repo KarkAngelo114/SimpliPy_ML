@@ -11,8 +11,9 @@ SimpliPy_ML relies on.
 ## How to install?
 You can run the following command in the terminal in your project directory:
 
+This library is not yet available on PyPi so "pip install SimpliPy_ML" won't work. So, run the command in your project's directory:
 ```bash
-pip install SimpliPy_ML
+pip install git+https://github.com/KarkAngelo114/SimpliPy_ML.git
 ```
 
 ## Library overview:
@@ -57,7 +58,5 @@ installer.package_install('*')
 ## WHAT'S NEW??
  - can now visualize the model's performance
 
-
-Read the documentation how to use SimpliPy_ML.
 
 "Have fun building stuffs :D" - Kark Angelo (The lead developer)

@@ -19,6 +19,7 @@ def load_Image_datasets(dir, autoResize=True, input_size=(0,0), mode='', split_s
 
     Parameters:
         dir (str): Path to the dataset directory.
+        autoResize (bool): If set to True, no need to enter the input shape as it will automatically resized to 224x224 or (224, 224)
         input_size (tuple): Target size for resizing images (ignored if autoResize=True).
         mode (str): Label mode ('int', 'categorical', 'binary').
         split_size (float): Fraction of data to reserve for validation and training.

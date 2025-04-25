@@ -13,3 +13,5 @@ package_installer.py
 .idea/
 .vscode/
 forceFix.py
+*.zip
+.idea
